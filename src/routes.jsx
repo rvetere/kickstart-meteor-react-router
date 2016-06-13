@@ -12,24 +12,16 @@ let history;
 let store;
 let initialState;
 
-// 1.(ssr: 2.) Use history hook to get a reference to the history object
-const historyHook = newHistory => {
-  history = newHistory;
+// Use history hook to get a reference to the history object
+const historyHook = newHistory => history = newHistory;
 
-  // if (Meteor.isServer) {
-  //     store = configureStore(history);
-  //     history = syncHistoryWithStore(history, store);
-  // }
-};
-
-
-// (ssr: 1.) Pass the state of the store as the object to be dehydrated server side
+// Pass the state of the store as the object to be dehydrated server side
 const dehydrateHook = () => store.getState();
 
-// 2. Take the rehydrated state and use it as the initial state client side
+// Take the rehydrated state and use it as the initial state client side
 const rehydrateHook = state => initialState = state;
 
-// 3. Create a redux store and pass into the redux Provider wrapper
+// Create a redux store and pass into the redux Provider wrapper
 const wrapperHook = app => {
   store = configureStore(history, initialState);
   history = syncHistoryWithStore(history, store);
@@ -51,5 +43,4 @@ const wrapperHook = app => {
 const clientOptions = {historyHook, rehydrateHook, wrapperHook};
 const serverOptions = {historyHook, dehydrateHook};
 
-// passing "todoRoutes" becomes useless - as we're overwriting the full "app" prop given in wrapperHook again -> pass custom props right there
 ReactRouterSSR.Run(todoRoutes, clientOptions, serverOptions);
