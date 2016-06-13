@@ -14,7 +14,7 @@ export function configureStore(history, initialState) {
       applyMiddleware(
         routerMiddleware(history)
       ),
-      window.devToolsExtension ? window.devToolsExtension() : f => f
+      Meteor.isClient && window.devToolsExtension ? window.devToolsExtension() : f => f
     )
   );
 
