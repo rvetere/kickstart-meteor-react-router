@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import ReactMixin from 'react-mixin';
+import { Link } from 'react-router';
 
 import TodoHeader from './TodoHeader';
 import TodoList from './TodoList';
@@ -51,6 +52,7 @@ export default class TodoMain extends Component {
               toggleHideCompleted={this.handleToggleHideCompleted}
           />
           <TodoList tasks={this.data.tasks} />
+          <Link to="/about">About</Link>
         </div>
     );
   }
