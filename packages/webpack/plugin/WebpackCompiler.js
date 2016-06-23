@@ -461,6 +461,7 @@ function prepareConfig(target, webpackConfig, usingDevServer, settings) {
     }
 
     webpackConfig.entry = [].concat(
+      'react-hot-loader/patch',
       'webpack-hot-middleware/client?' + options,
       webpackConfig.entry
     );

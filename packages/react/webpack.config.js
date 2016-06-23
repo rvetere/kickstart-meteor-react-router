@@ -5,7 +5,8 @@ function dependencies() {
     dependencies: {
       'react': '^15.0.0',
       'react-dom': '^15.0.0',
-      'react-addons-pure-render-mixin': '^15.0.0'
+      'react-addons-pure-render-mixin': '^15.0.0',
+      "react-hot-loader": "^3.0.0-beta.2"
     },
     devDependencies: {
       'babel': '^6.3.26',
@@ -16,10 +17,7 @@ function dependencies() {
       'babel-preset-stage-0': '^6.3.13',
       'babel-plugin-transform-decorators-legacy': '^1.3.2',
       'babel-plugin-add-module-exports': '^0.1.2',
-      'babel-plugin-react-transform': '^2.0.0',
       'expose-loader': '^0.7.1',
-      'react-transform-hmr' : '^1.0.1',
-      'react-transform-catch-errors': '^1.0.0',
       'redbox-react': '^1.2.0'
     }
   };
@@ -92,6 +90,10 @@ function config(settings, require) {
     babelSettings.plugins.push('add-module-exports');
   }
 
+  if (babelSettings.plugins.indexOf('react-hot-loader/babel') < 0) {
+    babelSettings.plugins.push('react-hot-loader/babel');
+  }
+
   if (settings.isDebug && settings.platform !== 'server' && !IS_TEST) {
     var transforms = [{
       transform: 'react-transform-hmr',
@@ -106,7 +108,7 @@ function config(settings, require) {
       });
     }
 
-    babelSettings.plugins.push(['react-transform', { transforms: transforms }]);
+    // babelSettings.plugins.push(['react-transform', { transforms: transforms }]);
   }
 
   var usingMeteorReact = settings.packages.indexOf('react-runtime') >= 0;

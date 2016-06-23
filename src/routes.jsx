@@ -1,4 +1,6 @@
+import { render } from 'react-dom';
 import { ReactRouterSSR } from 'meteor/reactrouter:react-router-ssr';
+import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
@@ -22,22 +24,36 @@ const dehydrateHook = () => store.getState();
 const rehydrateHook = state => initialState = state;
 
 // Create a redux store and pass into the redux Provider wrapper
-const wrapperHook = app => {
+const wrapperHook = () => {
   store = configureStore(history, initialState);
   history = syncHistoryWithStore(history, store);
+
+  const app = (
+    <AppContainer>
+      <Provider store={store}>
+        <Router
+          history={history}
+          children={todoRoutes}
+        />
+      </Provider>
+    </AppContainer>
+  );
+
+  // The following is needed so that we can hot reload our App.
+  if (process.env.NODE_ENV === 'development' && module.hot) {
+    module.hot.accept('TodoApp/client/routes', () => {
+      render(
+        app,
+        document.getElementById('react-app')
+      );
+    });
+  }
 
   // this line of code, like in the readme proposed - falls back to hash-routing oO
   // return <Provider store={store}>{app}</Provider>;
 
   // while this block where i overwrite the history of Router again with the new "enhanced" one from redux-router - works as expected
-  return (
-    <Provider store={store}>
-      {/* it's the only way we can attach the enhanced history object to the Router :-/ */}
-      <Router
-        history={history}
-        children={todoRoutes} />
-    </Provider>
-  );
+  return app;
 };
 
 const clientOptions = {historyHook, rehydrateHook, wrapperHook};
