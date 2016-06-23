@@ -3,10 +3,9 @@ var weight = 100;
 function dependencies() {
   return {
     dependencies: {
-      'react': '^15.1.0',
-      'react-dom': '^15.1.0',
-      'react-addons-pure-render-mixin': '^15.1.0',
-      "react-hot-loader": "^3.0.0-beta.2"
+      'react': '^15.0.0',
+      'react-dom': '^15.0.0',
+      'react-addons-pure-render-mixin': '^15.0.0'
     },
     devDependencies: {
       'babel': '^6.3.26',
@@ -17,7 +16,10 @@ function dependencies() {
       'babel-preset-stage-0': '^6.3.13',
       'babel-plugin-transform-decorators-legacy': '^1.3.2',
       'babel-plugin-add-module-exports': '^0.1.2',
+      'babel-plugin-react-transform': '^2.0.0',
       'expose-loader': '^0.7.1',
+      'react-transform-hmr' : '^1.0.1',
+      'react-transform-catch-errors': '^1.0.0',
       'redbox-react': '^1.2.0'
     }
   };
@@ -72,9 +74,9 @@ function config(settings, require) {
   }
 
   if (babelSettings.presets.indexOf('stage-0') < 0 &&
-      babelSettings.presets.indexOf('stage-1') < 0 &&
-      babelSettings.presets.indexOf('stage-2') < 0 &&
-      babelSettings.presets.indexOf('stage-3') < 0) {
+    babelSettings.presets.indexOf('stage-1') < 0 &&
+    babelSettings.presets.indexOf('stage-2') < 0 &&
+    babelSettings.presets.indexOf('stage-3') < 0) {
     babelSettings.presets.push('stage-0');
   }
 
@@ -104,7 +106,7 @@ function config(settings, require) {
       });
     }
 
-    // babelSettings.plugins.push(['react-transform', { transforms: transforms }]);
+    babelSettings.plugins.push(['react-transform', { transforms: transforms }]);
   }
 
   var usingMeteorReact = settings.packages.indexOf('react-runtime') >= 0;

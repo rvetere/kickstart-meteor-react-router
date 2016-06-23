@@ -461,7 +461,6 @@ function prepareConfig(target, webpackConfig, usingDevServer, settings) {
     }
 
     webpackConfig.entry = [].concat(
-      'react-hot-loader/patch',
       'webpack-hot-middleware/client?' + options,
       webpackConfig.entry
     );
@@ -612,8 +611,8 @@ function compile(target, entryFile, configFiles, webpackConfig) {
         // Copy the NPM modules you need in production for the server
         // Meteor 1.3 might fix that later ¯\_(ツ)_/¯
         data = 'global.require = ' + function(module) {
-          return Npm.require(module);
-        }.toString() + ';\n' + data;
+            return Npm.require(module);
+          }.toString() + ';\n' + data;
       } else {
         // Polyfill the require to Meteor require
         data = 'global.require = Npm.require;\n' + data;
